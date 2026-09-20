@@ -199,7 +199,10 @@ raw datasets of the bronze layer.
 
 ```sql
 SELECT uuid, username, name, birthdate
-FROM read_csv(getvariable('bucket') || '/bronze/users.csv')
+FROM read_csv(
+  getvariable('bucket') || '/bronze/users.csv',
+  header = true,
+  strict_mode = false)
 LIMIT 3;
 -- ┌──────────────────────────────────────┬────────────────┬────────────────┬────────────┐
 -- │                 uuid                 │    username    │      name      │ birthdate  │
