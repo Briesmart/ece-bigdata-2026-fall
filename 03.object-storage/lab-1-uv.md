@@ -55,6 +55,14 @@ pwd
 #> /home/onyxia/work
 ```
 
+Create a subdirectory inside `/home/onyxia/work` to use as your Git repository. You will work in this directory throughout the labs.
+
+```bash
+GIT_REPO_NAME=<git-repo-name>
+mkdir $GIT_REPO_NAME
+cd $GIT_REPO_NAME
+```
+
 Initialize Git. The `.gitignore` file excludes the hidden files created by the platform and by Python, except the ones
 which belong to the project.
 
@@ -102,8 +110,8 @@ The following files and directories are generated:
   Description of the project and its dependencies.
 - `README.md`  
   Description and presentation of the project, empty on initialisation.
-- `src/work/`  
-  The `work` Python package, named after the project directory, with its `__init__.py` file. If your directory has
+- `src/$GIT_REPO_NAME/`
+  The Python package, named after the project directory, with its `__init__.py` file. If your directory has
   another name, adapt the package name in the commands and imports of this lab.
 
 Additional files are generated on the first dependency installation or `uv sync`.
@@ -132,7 +140,7 @@ ls -a
 ```bash
 cat pyproject.toml
 #> [project]
-#> name = "work"
+#> name = "$GIT_REPO_NAME"
 #> version = "0.1.0"
 #> description = "Add your description here"
 #> readme = "README.md"
@@ -143,7 +151,7 @@ cat pyproject.toml
 #> dependencies = []
 #>
 #> [project.scripts]
-#> work = "work:main"
+#> $GIT_REPO_NAME = "$GIT_REPO_NAME:main"
 #>
 #> [build-system]
 #> requires = ["uv_build>=0.12.5,<0.13.0"]
@@ -165,12 +173,12 @@ git add \
 git commit -m "feat: initial project layout"
 ```
 
-Using your GitHub account or your preferred Git provider, create a new repository, eg
-`https://github.com/<owner>/ece-2026-bigdata.git`.
+Using your GitHub account or your preferred Git provider, create a new repository, e.g.
+`https://github.com/gollum/ece-2026-bigdata.git`.
 
 ```bash
-owner="<username>"
-git remote add origin "https://github.com/$owner/ece-2026-bigdata.git"
+GIT_USER_ID="<git-user-id>"
+git remote add origin "https://github.com/$GIT_USER_ID/$GIT_REPO_NAME.git"
 git push -u origin main
 ```
 
@@ -234,7 +242,7 @@ function accepts 3 formats: `csv`, `json`, and `jsonline`. `jsonline` is a forma
 document. An empty format prints nothing.
 
 ```bash
-cat <<'PY' >src/work/serialize.py
+cat <<'PY' >src/$GIT_REPO_NAME/serialize.py
 import csv
 import io
 import json
@@ -296,7 +304,7 @@ import argparse
 
 from faker import Faker
 
-from work.serialize import serialize
+from .serialize import serialize
 
 fake = Faker()
 # Generate the same dataset on every execution
@@ -341,15 +349,15 @@ a quantity, and a timestamp. Orders are distributed across an hourly timeline st
 2020 by default.
 
 ```bash
-cat <<'PY' >src/work/dataset_orders.py
+cat <<'PY' >src/$GIT_REPO_NAME/dataset_orders.py
 import argparse
 import datetime
 
 from faker import Faker
 from faker.providers import DynamicProvider
 
-from work.dataset_users import users_generate
-from work.serialize import serialize
+from .dataset_users import users_generate
+from .serialize import serialize
 
 fake = Faker()
 # Generate the same dataset on every execution
@@ -432,8 +440,8 @@ The `[project.scripts]` section of `pyproject.toml` declares the commands provid
 
 ```toml
 [project.scripts]
-dataset-users = "work.dataset_users:main"
-dataset-orders = "work.dataset_orders:main"
+dataset-users = "<git-repo-name>.dataset_users:main"
+dataset-orders = "<git-repo-name>.dataset_orders:main"
 ```
 
 ## Users script execution
