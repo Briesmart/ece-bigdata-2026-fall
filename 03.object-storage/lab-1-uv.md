@@ -110,9 +110,11 @@ The following files and directories are generated:
   Description of the project and its dependencies.
 - `README.md`  
   Description and presentation of the project, empty on initialisation.
-- `src/$GIT_REPO_NAME/`
+- `src/<uv_project_name>/`
   The Python package, named after the project directory, with its `__init__.py` file. If your directory has
   another name, adapt the package name in the commands and imports of this lab.
+
+The `<uv_project_name>` transformed the dash characters from `<git-repo-name>` to underscores.
 
 Additional files are generated on the first dependency installation or `uv sync`.
 
@@ -140,7 +142,7 @@ ls -a
 ```bash
 cat pyproject.toml
 #> [project]
-#> name = "$GIT_REPO_NAME"
+#> name = "<git-repo-name>"
 #> version = "0.1.0"
 #> description = "Add your description here"
 #> readme = "README.md"
@@ -151,7 +153,7 @@ cat pyproject.toml
 #> dependencies = []
 #>
 #> [project.scripts]
-#> $GIT_REPO_NAME = "$GIT_REPO_NAME:main"
+#> <git-repo-name> = "<uv_project_name>:main"
 #>
 #> [build-system]
 #> requires = ["uv_build>=0.12.5,<0.13.0"]
@@ -242,7 +244,7 @@ function accepts 3 formats: `csv`, `json`, and `jsonline`. `jsonline` is a forma
 document. An empty format prints nothing.
 
 ```bash
-cat <<'PY' >src/$GIT_REPO_NAME/serialize.py
+cat <<'PY' >src/<uv_project_name>/serialize.py
 import csv
 import io
 import json
@@ -299,7 +301,7 @@ The `users_generate` function creates a default of 50 users serialized as JSON. 
 dataset on every execution.
 
 ```bash
-cat <<'PY' >src/work/dataset_users.py
+cat <<'PY' >src/<uv_project_name>/dataset_users.py
 import argparse
 
 from faker import Faker
@@ -349,7 +351,7 @@ a quantity, and a timestamp. Orders are distributed across an hourly timeline st
 2020 by default.
 
 ```bash
-cat <<'PY' >src/$GIT_REPO_NAME/dataset_orders.py
+cat <<'PY' >src/<uv_project_name>/dataset_orders.py
 import argparse
 import datetime
 
